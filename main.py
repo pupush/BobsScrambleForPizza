@@ -4,78 +4,131 @@ import json
 import os
 
 root = Tk()
-c = Canvas(root, width=400, height=400)
-c.pack()
 
-zagolovchik = c.create_text(100,20,text="BOB'S SCRAMBLE \nFOR PIZZA", anchor="nw", font="Open_Sans 20")
-play = Button(root, text="Play", padx=20, pady=10)
+def levelы():
+    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
+    c = Canvas(root, width=400, height=400)
+    c.pack()
+
+    f = open(os.path.join("levelы", "perviy_uroven.json"))
+    coord_dacha = json.load(f)
+    f.close()
+    john_data = coord_dacha["john_list"]
+    platform_data = coord_dacha["platform_list"]
+    end_data = coord_dacha["end"]
+
+    img = PhotoImage(file = "zhrachka.png")
+    pizza = c.create_image(end_data["x"], end_data["y"], image=img, anchor="nw", tags="vse_fignjuliny")
+    bob = c.create_rectangle(150, 220, 180, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
+    vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + img.width(), end_data["y"] + img.height(), outline="", tags="vse_fignjuliny")
+    vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
+    vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
+    vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
+
+    john_list = []
+    platform_list = []
+
+    def iz_levela():
+        for john in john_data:
+            if john["random"]:
+                rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
+                x = random.randint(rand_x1, rand_x2)
+                y = random.randint(rand_y1, rand_y2)
+                x1 = x
+                y1 = y
+                x2 = x+60
+                y2 = y+60
+            else:
+                x1 = john["x1"]
+                x2 = john["x2"]
+                y1 = john["y1"]
+                y2 = john["y2"]
+
+            krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
+            john_list.append(krasniy_amogus)
+
+        for platform in platform_data:
+            if platform["random"]:
+                rand_x1, rand_y1, rand_x2, rand_y2 = platform["rand_x1"], platform["rand_y1"], platform["rand_x2"], platform["rand_y2"]
+                x = random.randint(rand_x1, rand_x2)
+                y = random.randint(rand_y1, rand_y2)
+                zheleznskiy_amogus = c.create_rectangle(x,y,x+60,y+60, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny"))
+                platform_list.append(zheleznskiy_amogus)
+            else:
+                zheleznskiy_amogus = c.create_rectangle(platform["x1"], platform["y1"], platform["x2"], platform["y2"], outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
+                platform_list.append(zheleznskiy_amogus)
+
+    iz_levela()
+
+    pressed_a = False
+    pressed_s = False
+    pressed_d = False
+    end_flag = False
+
+    speedX = 0 # це пиксели въ секунду
+    speedY = 5 # це тоже
+    tick_duration = 0.01 # це въ секундахъ
+    stoIt = False
+    gravity = 300
+    FRICKtion_FUCKtor = 300
+    X = float(c.coords(bob)[0])
+    Y = float(c.coords(bob)[1])
+    jump_speed = 10
+
+    def move_left(event):
+        global pressed_a
+        pressed_a = True
+        go_czechker()
+    def stop_left(event):
+        global pressed_a, speedX
+        pressed_a = False
+
+    def move_right(event):
+        global pressed_d
+        pressed_d = True
+        go_czechker()
+    def stop_right(event):
+        global pressed_d
+        pressed_d = False
+
+    def move_down(event):
+        global pressed_s
+        pressed_s = True
+        go_czechker()
+    def stop_down(event):
+        global pressed_s
+        pressed_s = False
+
+
+    def no_gravity(event):
+        global gravity
+        gravity = 0
+
+    def yes_gravity(event):
+        global gravity
+        gravity = 300
+
+    root.bind("<KeyPress-s>", move_down)
+    root.bind("<KeyRelease-s>", stop_down)
+
+    root.bind("<KeyPress-d>", move_right)
+    root.bind("<KeyRelease-d>", stop_right)
+
+    root.bind("<KeyPress-a>", move_left)
+    root.bind("<KeyRelease-a>", stop_left)
+
+    root.bind("<KeyPress-n>", no_gravity)
+    root.bind("<KeyPress-y>", yes_gravity)
+
+    root.bind("<KeyPress-k>", lambda event: root.destroy())
+    root.bind("<KeyPress-space>", jump)
+    
+    inertion_czech()
+    play.destroy()
+
+zagolovchik = Label(root, text="BOB'S SCRAMBLE \nFOR PIZZA", anchor="nw", font="Open_Sans 20")
+play = Button(root, text="Play", padx=20, pady=10, command=levelы)
 play.pack()
-
-f = open(os.path.join("levelы", "parkur markur.json"))
-coord_dacha = json.load(f)
-f.close()
-john_data = coord_dacha["john_list"]
-platform_data = coord_dacha["platform_list"]
-end_data = coord_dacha["end"]
-
-img = PhotoImage(file = "zhrachka.png")
-pizza = c.create_image(end_data["x"], end_data["y"], image=img, anchor="nw", tags="vse_fignjuliny")
-bob = c.create_rectangle(150, 220, 180, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
-vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + img.width(), end_data["y"] + img.height(), outline="", tags="vse_fignjuliny")
-vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
-vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
-vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
-
-john_list = []
-platform_list = []
-
-def iz_levela():
-    for john in john_data:
-        if john["random"]:
-            rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
-            x = random.randint(rand_x1, rand_x2)
-            y = random.randint(rand_y1, rand_y2)
-            x1 = x
-            y1 = y
-            x2 = x+60
-            y2 = y+60
-        else:
-            x1 = john["x1"]
-            x2 = john["x2"]
-            y1 = john["y1"]
-            y2 = john["y2"]
-
-        krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
-        john_list.append(krasniy_amogus)
-
-    for platform in platform_data:
-        if platform["random"]:
-            rand_x1, rand_y1, rand_x2, rand_y2 = platform["rand_x1"], platform["rand_y1"], platform["rand_x2"], platform["rand_y2"]
-            x = random.randint(rand_x1, rand_x2)
-            y = random.randint(rand_y1, rand_y2)
-            zheleznskiy_amogus = c.create_rectangle(x,y,x+60,y+60, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny"))
-            platform_list.append(zheleznskiy_amogus)
-        else:
-            zheleznskiy_amogus = c.create_rectangle(platform["x1"], platform["y1"], platform["x2"], platform["y2"], outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
-            platform_list.append(zheleznskiy_amogus)
-
-iz_levela()
-
-pressed_a = False
-pressed_s = False
-pressed_d = False
-end_flag = False
-
-speedX = 0 # це пиксели въ секунду
-speedY = 5 # це тоже
-tick_duration = 0.01 # це въ секундахъ
-stoIt = False
-gravity = 300
-FRICKtion_FUCKtor = 300
-X = float(c.coords(bob)[0])
-Y = float(c.coords(bob)[1])
-jump_speed = 10
-
 
 def inertion_czech():
     global X, Y, speedX, speedY, stoIt, end_flag
@@ -142,61 +195,12 @@ def go_czechker():
         if speedX >= 150:
             speedX = 150
 
-def move_left(event):
-    global pressed_a
-    pressed_a = True
-    go_czechker()
-def stop_left(event):
-    global pressed_a, speedX
-    pressed_a = False
-
-def move_right(event):
-    global pressed_d
-    pressed_d = True
-    go_czechker()
-def stop_right(event):
-    global pressed_d
-    pressed_d = False
-
-def move_down(event):
-    global pressed_s
-    pressed_s = True
-    go_czechker()
-def stop_down(event):
-    global pressed_s
-    pressed_s = False
-
-
-def no_gravity(event):
-    global gravity
-    gravity = 0
-
-def yes_gravity(event):
-    global gravity
-    gravity = 300
-
-root.bind("<KeyPress-s>", move_down)
-root.bind("<KeyRelease-s>", stop_down)
-
-root.bind("<KeyPress-d>", move_right)
-root.bind("<KeyRelease-d>", stop_right)
-
-root.bind("<KeyPress-a>", move_left)
-root.bind("<KeyRelease-a>", stop_left)
-
-root.bind("<KeyPress-n>", no_gravity)
-root.bind("<KeyPress-y>", yes_gravity)
-
-root.bind("<KeyPress-k>", lambda event: root.destroy())
-
 def jump(event=None):
     global stoIt
     global speedY
     if stoIt:
         stoIt = False
         speedY = -200
-
-root.bind("<KeyPress-space>", jump)
 
 def conflict_czechk(someone1,someone2):
     pos1 = c.coords(someone1)
@@ -209,7 +213,5 @@ def conflict_czechk(someone1,someone2):
     collisionY_bottom = collisionX and pos2[3] > pos1[1] > pos2[1]
     
     return [collisionX_left, collisionX_right, collisionY_top, collisionY_bottom, collisionX]
-
-inertion_czech()
 
 root.mainloop()
