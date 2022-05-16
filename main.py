@@ -19,7 +19,7 @@ def levelы():
 
     img = PhotoImage(file = "zhrachka.png")
     pizza = c.create_image(end_data["x"], end_data["y"], image=img, anchor="nw", tags="vse_fignjuliny")
-    bob = c.create_rectangle(150, 220, 180, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
+    bob = c.create_rectangle(100, 220, 130, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
     vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + img.width(), end_data["y"] + img.height(), outline="", tags="vse_fignjuliny")
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
