@@ -1,0 +1,52 @@
+{
+    "john_list" : [
+        {
+            "random" : true,
+            "rand_x1" : 61,
+            "rand_y1" : 41,
+            "rand_x2" : 340,
+            "rand_y2" : 190
+        },
+        {
+            "random" : true,
+            "rand_x1" : 61,
+            "rand_y1" : 41,
+            "rand_x2" : 340,
+            "rand_y2" : 190
+        },
+        {
+            "random" : false,
+            "x1" : -9999,
+            "y1" : 405,
+            "x2" : 9999,
+            "y2" : 505
+        }
+    ],
+    "platform_list" : [
+        {
+            "random" : false,
+            "x1" : 50,
+            "y1" : 300,
+            "x2" : 150,
+            "y2" : 310 
+        },
+        {
+            "random" : false,
+            "x1" : 250,
+            "y1" : 300,
+            "x2" : 350,
+            "y2" : 310 
+        },
+        {
+            "random" : false,
+            "x1" : 450,
+            "y1" : 300,
+            "x2" : 550,
+            "y2" : 310 
+        }
+    ],
+    "end" : {
+        "x" : 300,
+        "y" : 220
+    }
+}
