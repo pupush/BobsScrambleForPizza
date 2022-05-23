@@ -251,9 +251,6 @@ def parkurchek():
     play.destroy()
     zagolovchik.destroy()
     parkOURCZECH.destroy()
-    for knopochk in list_knopochek:
-        knopochk.destroy()
-
 #for lvl, i in zip(vse_uROVni, range(0, len(vse_uROVni)))
 zagolovchik = Label(root, text="BOB'S SCRAMBLE \nFOR PIZZA", anchor="nw", font="Open_Sans 20")
 zagolovchik.pack()
