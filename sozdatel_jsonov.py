@@ -38,10 +38,9 @@ for i in range(3,361,2):
         y2 = y1 + 10
     SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["platform_list"].append({"random":False, "x1":x1, "y1":y1, "x2":x2, "y2":y2})
 
+    SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["end"]["y"] = y1-80
+    SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["end"]["x"] = x1+20
 
-SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["end"]["y"] = y1-80
-SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["end"]["x"] = x1+20
-
-fail = open(os.path.join("levelы", "parkur markur.json"),"w")
+fail = open("parkur markur.json", "w")
 json.dump(SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY, fail)
 fail.close()
