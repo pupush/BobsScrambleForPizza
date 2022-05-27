@@ -6,7 +6,7 @@ import os
 root = Tk()
 
 def levelы(uroven_nazvanie):
-    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list   
+    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list   
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
@@ -24,6 +24,7 @@ def levelы(uroven_nazvanie):
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,9999999999999,2**68,300)
 
     john_list = []
     platform_list = []
@@ -131,7 +132,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov as sj
-    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
+    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
     c = Canvas(root, width=400, height=400)
     c.pack()
 
@@ -148,7 +149,8 @@ def parkurchek():
     vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + img.width(), end_data["y"] + img.height(), outline="", tags="vse_fignjuliny")
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
-    vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
+    vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100)
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,350,2**68,9999999999999999999999999999999999999) 
 
     john_list = []
     platform_list = []
@@ -315,6 +317,11 @@ def inertion_czech():
         if any(conflict_czechk(bob, vspomoGosha_v4_0)[:4]):
             Y -= speedY*tick_duration 
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
+    if Y < 300:
+        if any(conflict_czechk(bob,vspomoGosha_v5_0)[:4]):
+            Y -= speedY*tick_duration
+            c.move("vse_fignjuliny", 0, -speedY*tick_duration)
+    print(c.coords(bob)[1])
 
 
 def FRICKtion(timer_thing):
