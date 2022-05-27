@@ -2,6 +2,7 @@ from tkinter import *
 import random
 import json
 import os
+from dataclasses import dataclass
 
 root = Tk()
 
@@ -150,7 +151,7 @@ def parkurchek():
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100)
-    vspomoGosha_v5_0 = c.create_rectangle(-2**68,350,2**68,9999999999999999999999999999999999999) 
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,350,2**68,999999999999) 
 
     john_list = []
     platform_list = []
@@ -287,14 +288,16 @@ def inertion_czech():
     FRICKtion(tick_duration)
     c.coords(bob, X, Y, X+30, Y+30)
 
-    if any(any(conflict_czechk(bob, john)[:4]) for john in john_list):
+    if any(any(conflict_czechk(bob, john).collisions) for john in john_list):
         root.destroy()
-    if not end_flag and any(conflict_czechk(bob,vspomoGosha)[:4]):
+    if not end_flag and any(conflict_czechk(bob,vspomoGosha).collisions):
         end_flag = True
         c.create_text(200,50,text="Поздравляю, ты дошел до просто стоящей и никак не \nдвигающейся pizzы! Даже собака с моего двора \nэто не смогла сделать!")
         root.after(3500, root.destroy)
     for platform in platform_list:
-        collisionX_left, collisionX_right, collisionY_top, collisionY_bottom, collisionX = conflict_czechk(bob, platform)
+        KOLYAsion = conflict_czechk(bob,platform)
+        collisionX_left, collisionX_right, collisionY_top, collisionY_bottom = KOLYAsion.collisions
+        collisionX = KOLYAsion.collisionX
         if collisionX_left or collisionX_right:
             speedX = 0
             X = oldX
@@ -307,21 +310,21 @@ def inertion_czech():
                 stoIt = platform
         if not collisionX and stoIt == platform:
             stoIt = False
-    if any(conflict_czechk(bob, vspomoGosha_v2_0)):
+    if conflict_czechk(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
-    if any(conflict_czechk(bob, vspomoGosha_v3_0)):
+    if conflict_czechk(bob, vspomoGosha_v3_0).any():
         X -= speedX*tick_duration 
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
     if speedY < 0:
-        if any(conflict_czechk(bob, vspomoGosha_v4_0)[:4]):
+        if any(conflict_czechk(bob, vspomoGosha_v4_0).collisions):
             Y -= speedY*tick_duration 
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
     if Y < 300:
-        if any(conflict_czechk(bob,vspomoGosha_v5_0)[:4]):
+        if any(conflict_czechk(bob,vspomoGosha_v5_0).collisions):
             Y -= speedY*tick_duration
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
-    print(c.coords(bob)[1])
+            print(int(c.coords(bob)[1]))
 
 
 def FRICKtion(timer_thing):
@@ -353,6 +356,14 @@ def jump(event=None):
         stoIt = False
         speedY = -200
 
+@dataclass
+class collision_data:
+    collisions: list[bool]
+    collisionX: bool
+
+    def any(self):
+        return any(self.collisions) or self.collisionX
+
 def conflict_czechk(someone1,someone2):
     pos1 = c.coords(someone1)
     pos2 = c.coords(someone2)
@@ -363,6 +374,7 @@ def conflict_czechk(someone1,someone2):
     collisionY_top = collisionX and pos2[1] < pos1[3] < pos2[3]
     collisionY_bottom = collisionX and pos2[3] > pos1[1] > pos2[1]
     
-    return [collisionX_left, collisionX_right, collisionY_top, collisionY_bottom, collisionX]
+    return collision_data(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
+    #return [collisionX_left, collisionX_right, collisionY_top, collisionY_bottom, collisionX]
 
 root.mainloop()
