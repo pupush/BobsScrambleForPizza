@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from tkinter import *
 import random
 import json
@@ -7,7 +8,7 @@ from dataclasses import dataclass
 root = Tk()
 
 def levelы(uroven_nazvanie):
-    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list   
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list   
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
@@ -17,6 +18,7 @@ def levelы(uroven_nazvanie):
 
     c = Canvas(root, width=400, height=400)
     c.pack()
+    absolut_vodka = c.create_rectangle(0,0,1,1, outline="", tags="vse_fignjuliny")
 
     img = PhotoImage(file = "zhrachka.png")
     pizza = c.create_image(end_data["x"], end_data["y"], image=img, anchor="nw", tags="vse_fignjuliny")
@@ -132,10 +134,11 @@ def levelы(uroven_nazvanie):
         knopochk.destroy()
 
 def parkurchek():
-    import sozdatel_jsonov as sj
-    global c, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
+    import sozdatel_jsonov
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
     c = Canvas(root, width=400, height=400)
     c.pack()
+    absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
 
     f = open("parkur markur.json")
     coord_dacha = json.load(f)
@@ -151,7 +154,7 @@ def parkurchek():
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100)
-    vspomoGosha_v5_0 = c.create_rectangle(-2**68,350,2**68,999999999999) 
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,300,2**68,999999999999, outline="#653") 
 
     john_list = []
     platform_list = []
@@ -269,7 +272,6 @@ def vыbiratelь():
         knopocheka.pack()
         list_knopochek.append(knopocheka)
         list_levelov.append(lvl)
-        print(list_levelov[-1])
     play.destroy()
     parkOURCZECH.destroy()
 play = Button(root, text="Play", padx=20, pady=10, command=vыbiratelь)
@@ -278,8 +280,9 @@ play.pack()
 parkOURCZECH.pack()
 
 def inertion_czech():
-    global X, Y, speedX, speedY, stoIt, end_flag
+    global X, Y, speedX, speedY, stoIt, end_flag, absoluteY
     root.after(int(tick_duration*1000), inertion_czech)
+    absoluteY = c.coords(bob)[1] - c.coords(absolut_vodka)[1]
     oldX, oldY = X, Y
     X += speedX * tick_duration
     Y += speedY * tick_duration
@@ -320,11 +323,10 @@ def inertion_czech():
         if any(conflict_czechk(bob, vspomoGosha_v4_0).collisions):
             Y -= speedY*tick_duration 
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
-    if Y < 300:
+    if absoluteY < 300:
         if any(conflict_czechk(bob,vspomoGosha_v5_0).collisions):
             Y -= speedY*tick_duration
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
-            print(int(c.coords(bob)[1]))
 
 
 def FRICKtion(timer_thing):
