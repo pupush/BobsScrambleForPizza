@@ -8,12 +8,13 @@ from dataclasses import dataclass
 root = Tk()
 
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list   
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list   
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
     john_data = coord_dacha["john_list"]
     platform_data = coord_dacha["platform_list"]
+    jump_data = coord_dacha["jumpy_list"]
     end_data = coord_dacha["end"]
 
     c = Canvas(root, width=400, height=400)
@@ -31,6 +32,7 @@ def levelы(uroven_nazvanie):
 
     john_list = []
     platform_list = []
+    jump_list = []
 
     def iz_levela():
         for john in john_data:
@@ -51,16 +53,43 @@ def levelы(uroven_nazvanie):
             krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
             john_list.append(krasniy_amogus)
 
+
         for platform in platform_data:
             if platform["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = platform["rand_x1"], platform["rand_y1"], platform["rand_x2"], platform["rand_y2"]
                 x = random.randint(rand_x1, rand_x2)
                 y = random.randint(rand_y1, rand_y2)
-                zheleznskiy_amogus = c.create_rectangle(x,y,x+60,y+60, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny"))
-                platform_list.append(zheleznskiy_amogus)
+                x1 = x
+                y1 = y
+                x2 = x+100
+                y2 = y+10
             else:
-                zheleznskiy_amogus = c.create_rectangle(platform["x1"], platform["y1"], platform["x2"], platform["y2"], outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
-                platform_list.append(zheleznskiy_amogus)
+                x1 = platform["x1"]
+                x2 = platform["x2"]
+                y1 = platform["y1"]
+                y2 = platform["y2"]
+
+            zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
+            platform_list.append(zheleznskiy_amogus)
+
+
+        for ZHUMP in jump_data:
+            if ZHUMP["random"]:
+                rand_x1, rand_y1, rand_x2, rand_y2 = ZHUMP["rand_x1"], ZHUMP["rand_y1"], ZHUMP["rand_x2"], ZHUMP["rand_y2"]
+                x = random.randint(rand_x1, rand_x2)
+                y = random.randint(rand_y1, rand_y2)
+                x1 = x
+                y1 = y
+                x2 = x+60
+                y2 = y+60
+            else:
+                x1 = ZHUMP["x1"]
+                x2 = ZHUMP["x2"]
+                y1 = ZHUMP["y1"]
+                y2 = ZHUMP["y2"]
+
+            prygus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#dd0", tags=("vse_fignjuliny"))
+            jump_list.append(prygus)
 
     iz_levela()
 
@@ -77,7 +106,6 @@ def levelы(uroven_nazvanie):
     FRICKtion_FUCKtor = 300
     X = float(c.coords(bob)[0])
     Y = float(c.coords(bob)[1])
-    jump_speed = 10
 
     def move_left(event):
         global pressed_a
@@ -135,7 +163,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, jump_speed, john_list, platform_list
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list
     c = Canvas(root, width=400, height=400)
     c.pack()
     absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
@@ -145,6 +173,7 @@ def parkurchek():
     f.close()
     john_data = coord_dacha["john_list"]
     platform_data = coord_dacha["platform_list"]
+    jump_data = coord_dacha["jumpy_list"]
     end_data = coord_dacha["end"]
 
     img = PhotoImage(file = "zhrachka.png")
@@ -158,6 +187,7 @@ def parkurchek():
 
     john_list = []
     platform_list = []
+    jump_list = []
 
     def parkurist():
         for john in john_data:
@@ -178,16 +208,43 @@ def parkurchek():
             krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
             john_list.append(krasniy_amogus)
 
+
         for platform in platform_data:
             if platform["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = platform["rand_x1"], platform["rand_y1"], platform["rand_x2"], platform["rand_y2"]
                 x = random.randint(rand_x1, rand_x2)
                 y = random.randint(rand_y1, rand_y2)
-                zheleznskiy_amogus = c.create_rectangle(x,y,x+60,y+60, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny"))
-                platform_list.append(zheleznskiy_amogus)
+                x1 = x
+                y1 = y
+                x2 = x+100
+                y2 = y+10
             else:
-                zheleznskiy_amogus = c.create_rectangle(platform["x1"], platform["y1"], platform["x2"], platform["y2"], outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
-                platform_list.append(zheleznskiy_amogus)
+                x1 = platform["x1"]
+                x2 = platform["x2"]
+                y1 = platform["y1"]
+                y2 = platform["y2"]
+
+            zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
+            platform_list.append(zheleznskiy_amogus)
+
+
+        for ZHUMP in jump_data:
+            if ZHUMP["random"]:
+                rand_x1, rand_y1, rand_x2, rand_y2 = ZHUMP["rand_x1"], ZHUMP["rand_y1"], ZHUMP["rand_x2"], ZHUMP["rand_y2"]
+                x = random.randint(rand_x1, rand_x2)
+                y = random.randint(rand_y1, rand_y2)
+                x1 = x
+                y1 = y
+                x2 = x+60
+                y2 = y+60
+            else:
+                x1 = ZHUMP["x1"]
+                x2 = ZHUMP["x2"]
+                y1 = ZHUMP["y1"]
+                y2 = ZHUMP["y2"]
+
+            prygus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#dd0", tags=("vse_fignjuliny"))
+            jump_list.append(prygus)
 
     parkurist()
 
@@ -204,7 +261,6 @@ def parkurchek():
     FRICKtion_FUCKtor = 300
     X = float(c.coords(bob)[0])
     Y = float(c.coords(bob)[1])
-    jump_speed = 10
 
     def move_left(event):
         global pressed_a
@@ -313,6 +369,12 @@ def inertion_czech():
                 stoIt = platform
         if not collisionX and stoIt == platform:
             stoIt = False
+    if any(conflict_czechk(bob, jump).collisions[2] for jump in jump_list):
+        speedY = -300
+    elif any(conflict_czechk(bob, jump).collisions[0] for jump in jump_list) or any(conflict_czechk(bob, jump).collisions[1] for jump in jump_list):
+        speedX = 0
+    elif any(conflict_czechk(bob, jump).collisions[3] for jump in jump_list):
+        speedY = 0
     if conflict_czechk(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
@@ -377,6 +439,5 @@ def conflict_czechk(someone1,someone2):
     collisionY_bottom = collisionX and pos2[3] > pos1[1] > pos2[1]
     
     return collision_data(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
-    #return [collisionX_left, collisionX_right, collisionY_top, collisionY_bottom, collisionX]
 
 root.mainloop()
