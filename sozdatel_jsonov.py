@@ -2,7 +2,7 @@ import random
 import json
 import os
 
-SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY = {"john_list":[{"random":False,"x1":-2**68,"y1":450,"x2":2**68,"y2":525}], "platform_list":[], "end":{"x":3020, "y":0}}
+SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY = {"john_list":[{"random":False,"x1":-2**68,"y1":450,"x2":2**68,"y2":525}], "platform_list":[], "jeremiah_list":[], "end":{"x":3020, "y":0}}
 x1 = 100
 x2 = 200
 y1 = random.randint(225,375)

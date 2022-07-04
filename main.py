@@ -7,14 +7,23 @@ from dataclasses import dataclass
 
 root = Tk()
 
+@dataclass
+class Jeremih:
+    treugolnik_telo: int
+    speedX: int
+    speedY: int
+    vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228 : int
+    stoIt: bool
+
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list   
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, Jeremiah_X, Jeremiah_Y, john_list, platform_list, jeremiah_list, jump_list
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
     john_data = coord_dacha["john_list"]
     platform_data = coord_dacha["platform_list"]
     jump_data = coord_dacha["jumpy_list"]
+    jeremiah_data = coord_dacha["jeremiah_list"]
     end_data = coord_dacha["end"]
 
     c = Canvas(root, width=400, height=400)
@@ -30,9 +39,28 @@ def levelы(uroven_nazvanie):
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
     vspomoGosha_v5_0 = c.create_rectangle(-2**68,9999999999999,2**68,300)
 
+
+    pressed_a = False
+    pressed_s = False
+    pressed_d = False
+    end_flag = False
+
+    speedX = 0 # це пиксели въ секунду
+    speedY = 5 # це тоже
+    Jeremiah_speedX = 50
+    Jeremiah_speedY = 0
+    tick_duration = 0.01 # це въ секундахъ
+    stoIt = False
+    Jeremiah_stoIt = False
+    gravity = 300
+    FRICKtion_FUCKtor = 300
+    X = float(c.coords(bob)[0])
+    Y = float(c.coords(bob)[1])
+
     john_list = []
     platform_list = []
     jump_list = []
+    jeremiah_list = []
 
     def iz_levela():
         for john in john_data:
@@ -91,6 +119,17 @@ def levelы(uroven_nazvanie):
             prygus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#dd0", tags=("vse_fignjuliny"))
             jump_list.append(prygus)
 
+        for jeremiah in jeremiah_data:
+            x1 = jeremiah["x1"]
+            y1 = jeremiah["y1"]
+            x2 = x1-15
+            y2 = y1+30
+            x3 = x1+15
+            y3 = y1+30
+            trёugolnik = c.create_polygon(x1,y1,x2,y2,x3,y3,outline="#000", fill="#00f", tags="vse_fignjuliny")
+            VOVAN228 = c.create_rectangle(x1-(x1-x2)/3,y1,x1+(x3-x1)/3,y2, outline="#000", tags="vse_fignjuliny")
+            jeremiah_list.append(Jeremih(treugolnik_telo=trёugolnik, speedX=Jeremiah_speedX, speedY=Jeremiah_speedY, vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228=VOVAN228, stoIt=Jeremiah_stoIt))
+
     iz_levela()
 
     pressed_a = False
@@ -106,6 +145,7 @@ def levelы(uroven_nazvanie):
     FRICKtion_FUCKtor = 300
     X = float(c.coords(bob)[0])
     Y = float(c.coords(bob)[1])
+
 
     def move_left(event):
         global pressed_a
@@ -163,7 +203,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list
     c = Canvas(root, width=400, height=400)
     c.pack()
     absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
@@ -173,7 +213,6 @@ def parkurchek():
     f.close()
     john_data = coord_dacha["john_list"]
     platform_data = coord_dacha["platform_list"]
-    jump_data = coord_dacha["jumpy_list"]
     end_data = coord_dacha["end"]
 
     img = PhotoImage(file = "zhrachka.png")
@@ -187,7 +226,6 @@ def parkurchek():
 
     john_list = []
     platform_list = []
-    jump_list = []
 
     def parkurist():
         for john in john_data:
@@ -216,36 +254,15 @@ def parkurchek():
                 y = random.randint(rand_y1, rand_y2)
                 x1 = x
                 y1 = y
-                x2 = x+100
-                y2 = y+10
+                x2 = x+60
+                y2 = y+60
             else:
                 x1 = platform["x1"]
                 x2 = platform["x2"]
                 y1 = platform["y1"]
                 y2 = platform["y2"]
-
             zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
             platform_list.append(zheleznskiy_amogus)
-
-
-        for ZHUMP in jump_data:
-            if ZHUMP["random"]:
-                rand_x1, rand_y1, rand_x2, rand_y2 = ZHUMP["rand_x1"], ZHUMP["rand_y1"], ZHUMP["rand_x2"], ZHUMP["rand_y2"]
-                x = random.randint(rand_x1, rand_x2)
-                y = random.randint(rand_y1, rand_y2)
-                x1 = x
-                y1 = y
-                x2 = x+60
-                y2 = y+60
-            else:
-                x1 = ZHUMP["x1"]
-                x2 = ZHUMP["x2"]
-                y1 = ZHUMP["y1"]
-                y2 = ZHUMP["y2"]
-
-            prygus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#dd0", tags=("vse_fignjuliny"))
-            jump_list.append(prygus)
-
     parkurist()
 
     pressed_a = False
@@ -261,6 +278,7 @@ def parkurchek():
     FRICKtion_FUCKtor = 300
     X = float(c.coords(bob)[0])
     Y = float(c.coords(bob)[1])
+    jump_speed = 10 # wtf is this?!
 
     def move_left(event):
         global pressed_a
@@ -336,7 +354,7 @@ play.pack()
 parkOURCZECH.pack()
 
 def inertion_czech():
-    global X, Y, speedX, speedY, stoIt, end_flag, absoluteY
+    global X, Y, speedX, speedY, stoIt, Jeremiah_stoIt, end_flag, absoluteY
     root.after(int(tick_duration*1000), inertion_czech)
     absoluteY = c.coords(bob)[1] - c.coords(absolut_vodka)[1]
     oldX, oldY = X, Y
@@ -344,6 +362,33 @@ def inertion_czech():
     Y += speedY * tick_duration
     if not stoIt:
         speedY += gravity * tick_duration
+    for ZHIRIMI in jeremiah_list: 
+        Jeremiah_oldX, Jeremiah_oldY = c.coords(ZHIRIMI.treugolnik_telo)[0], c.coords(ZHIRIMI.treugolnik_telo)[1]
+        Jeremiah_X, Jeremiah_Y = c.coords(ZHIRIMI.treugolnik_telo)[0], c.coords(ZHIRIMI.treugolnik_telo)[1]
+        Jeremiah_X += ZHIRIMI.speedX * tick_duration
+        Jeremiah_Y += ZHIRIMI.speedY * tick_duration
+        if not ZHIRIMI.stoIt:
+            ZHIRIMI.speedY += gravity*tick_duration
+        c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
+        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/3,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/3,Jeremiah_Y+30)
+        for platform in platform_list:
+            KOLYAsion_v2_0 = conflict_czechk(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform)
+            Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom = KOLYAsion_v2_0.collisions
+            Иеремий_collisionX = KOLYAsion_v2_0.collisionX
+            if Иеремий_collisionX_left or Иеремий_collisionX_right:
+                Jeremiah_X = Jeremiah_oldX 
+                c.coords(ZHIRIMI, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
+            if Иеремий_collisionY_top or Иеремий_collisionY_bottom:
+                ZHIRIMI.speedY = 0
+                Jeremiah_Y = Jeremiah_oldY
+                c.coords(ZHIRIMI, Jeremiah_X, Jeremiah_Y, Jeremiah_Y, Jeremiah_X-15,Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
+                if Иеремий_collisionY_top:
+                    ZHIRIMI.stoIt = platform
+            elif not Иеремий_collisionX and ZHIRIMI.stoIt == platform:
+                ZHIRIMI.stoIt = False
+            print(Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom, ZHIRIMI.stoIt)  
+        c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
+        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/3,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/3,Jeremiah_Y+30)
     FRICKtion(tick_duration)
     c.coords(bob, X, Y, X+30, Y+30)
 
@@ -431,12 +476,12 @@ class collision_data:
 def conflict_czechk(someone1,someone2):
     pos1 = c.coords(someone1)
     pos2 = c.coords(someone2)
-    collisionY = pos1[3] > pos2[1] and pos1[1] < pos2[3]
-    collisionX = pos1[2] > pos2[0] and pos1[0] < pos2[2]
-    collisionX_left = collisionY and pos2[2] > pos1[2] > pos2[0] 
-    collisionX_right = collisionY and pos2[0] < pos1[0] < pos2[2]
-    collisionY_top = collisionX and pos2[1] < pos1[3] < pos2[3]
-    collisionY_bottom = collisionX and pos2[3] > pos1[1] > pos2[1]
+    collisionY = pos1[3] >= pos2[1] and pos1[1] <= pos2[3]
+    collisionX = pos1[2] >= pos2[0] and pos1[0] <= pos2[2]
+    collisionX_left = collisionY and pos2[2] >= pos1[2] >= pos2[0] 
+    collisionX_right = collisionY and pos2[0] <= pos1[0] <= pos2[2]
+    collisionY_top = collisionX and pos2[1] <= pos1[3] <= pos2[3]
+    collisionY_bottom = collisionX and pos2[3] >= pos1[1] >= pos2[1]
     
     return collision_data(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
 
