@@ -47,7 +47,7 @@ def levelы(uroven_nazvanie):
 
     speedX = 0 # це пиксели въ секунду
     speedY = 5 # це тоже
-    Jeremiah_speedX = 50
+    Jeremiah_speedX = 75
     Jeremiah_speedY = 0
     tick_duration = 0.01 # це въ секундахъ
     stoIt = False
@@ -127,7 +127,7 @@ def levelы(uroven_nazvanie):
             x3 = x1+15
             y3 = y1+30
             trёugolnik = c.create_polygon(x1,y1,x2,y2,x3,y3,outline="#000", fill="#00f", tags="vse_fignjuliny")
-            VOVAN228 = c.create_rectangle(x1-(x1-x2)/3,y1,x1+(x3-x1)/3,y2, outline="#000", tags="vse_fignjuliny")
+            VOVAN228 = c.create_rectangle(x1-(x1-x2)/2,y1,x1+(x3-x1)/2,y2, outline="", tags="vse_fignjuliny")
             jeremiah_list.append(Jeremih(treugolnik_telo=trёugolnik, speedX=Jeremiah_speedX, speedY=Jeremiah_speedY, vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228=VOVAN228, stoIt=Jeremiah_stoIt))
 
     iz_levela()
@@ -370,7 +370,7 @@ def inertion_czech():
         if not ZHIRIMI.stoIt:
             ZHIRIMI.speedY += gravity*tick_duration
         c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
-        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/3,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/3,Jeremiah_Y+30)
+        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/2,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/2,Jeremiah_Y+30)
         for platform in platform_list:
             KOLYAsion_v2_0 = conflict_czechk(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform)
             Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom = KOLYAsion_v2_0.collisions
@@ -386,9 +386,14 @@ def inertion_czech():
                     ZHIRIMI.stoIt = platform
             elif not Иеремий_collisionX and ZHIRIMI.stoIt == platform:
                 ZHIRIMI.stoIt = False
-            print(Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom, ZHIRIMI.stoIt)  
+        if any(conflict_czechk(bob, ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228).collisions):
+            root.destroy()
+        if c.coords(bob)[2] < c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228)[0]:
+            ZHIRIMI.speedX = -75
+        if c.coords(bob)[0] > c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228)[2]:
+            ZHIRIMI.speedX = 75
         c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
-        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/3,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/3,Jeremiah_Y+30)
+        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/2,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/2,Jeremiah_Y+30)
     FRICKtion(tick_duration)
     c.coords(bob, X, Y, X+30, Y+30)
 
