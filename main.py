@@ -16,7 +16,7 @@ class Jeremih:
     stoIt: bool
 
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, Jeremiah_X, Jeremiah_Y, john_list, platform_list, jeremiah_list, jump_list
+    global c, absolut_vodka, pizza_png, boboprobivaemiy, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jeremiah_list, jump_list, invis_list
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
@@ -24,21 +24,23 @@ def levelы(uroven_nazvanie):
     platform_data = coord_dacha["platform_list"]
     jump_data = coord_dacha["jumpy_list"]
     jeremiah_data = coord_dacha["jeremiah_list"]
+    invis_data = coord_dacha["invis_list"]
     end_data = coord_dacha["end"]
 
     c = Canvas(root, width=400, height=400)
     c.pack()
+
     absolut_vodka = c.create_rectangle(0,0,1,1, outline="", tags="vse_fignjuliny")
 
-    img = PhotoImage(file = "zhrachka.png")
-    pizza = c.create_image(end_data["x"], end_data["y"], image=img, anchor="nw", tags="vse_fignjuliny")
+    pizza_png = PhotoImage(file = "zhrachka.png")
+    boboprobivaemiy = PhotoImage(file = "platformichulechka.png")
+    pizza = c.create_image(end_data["x"], end_data["y"], image=pizza_png, anchor="nw", tags="vse_fignjuliny")
     bob = c.create_rectangle(135, 220, 165, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
-    vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + img.width(), end_data["y"] + img.height(), outline="", tags="vse_fignjuliny")
+    vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + pizza_png.width(), end_data["y"] + pizza_png.height(), outline="", tags="vse_fignjuliny")
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
     vspomoGosha_v5_0 = c.create_rectangle(-2**68,9999999999999,2**68,300)
-
 
     pressed_a = False
     pressed_s = False
@@ -61,6 +63,7 @@ def levelы(uroven_nazvanie):
     platform_list = []
     jump_list = []
     jeremiah_list = []
+    invis_list = []
 
     def iz_levela():
         for john in john_data:
@@ -81,7 +84,6 @@ def levelы(uroven_nazvanie):
             krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
             john_list.append(krasniy_amogus)
 
-
         for platform in platform_data:
             if platform["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = platform["rand_x1"], platform["rand_y1"], platform["rand_x2"], platform["rand_y2"]
@@ -99,7 +101,6 @@ def levelы(uroven_nazvanie):
 
             zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
             platform_list.append(zheleznskiy_amogus)
-
 
         for ZHUMP in jump_data:
             if ZHUMP["random"]:
@@ -129,6 +130,12 @@ def levelы(uroven_nazvanie):
             trёugolnik = c.create_polygon(x1,y1,x2,y2,x3,y3,outline="#000", fill="#00f", tags="vse_fignjuliny")
             VOVAN228 = c.create_rectangle(x1-(x1-x2)/2,y1,x1+(x3-x1)/2,y2, outline="", tags="vse_fignjuliny")
             jeremiah_list.append(Jeremih(treugolnik_telo=trёugolnik, speedX=Jeremiah_speedX, speedY=Jeremiah_speedY, vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228=VOVAN228, stoIt=Jeremiah_stoIt))
+
+        for invis in invis_data:
+            x = invis["x"]
+            y = invis["y"]
+            obmanSCHTSCHikoviy_amogus = c.create_image(x, y, image=boboprobivaemiy, anchor="nw", tags="vse_fignjuliny")
+            invis_list.append(obmanSCHTSCHikoviy_amogus)
 
     iz_levela()
 
@@ -194,7 +201,7 @@ def levelы(uroven_nazvanie):
     root.bind("<KeyPress-k>", lambda event: root.destroy())
     root.bind("<KeyPress-space>", jump)
     
-    inertion_czech()
+    fizika_czech()
     play.destroy()
     zagolovchik.destroy()
     parkOURCZECH.destroy()
@@ -203,7 +210,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list, jeremiah_list
     c = Canvas(root, width=400, height=400)
     c.pack()
     absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
@@ -222,10 +229,12 @@ def parkurchek():
     vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
     vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
     vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100)
-    vspomoGosha_v5_0 = c.create_rectangle(-2**68,300,2**68,999999999999, outline="#653") 
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,300,2**68,999999999999, outline="#653")  
 
     john_list = []
     platform_list = []
+    jump_list = []
+    jeremiah_list = []
 
     def parkurist():
         for john in john_data:
@@ -258,7 +267,7 @@ def parkurchek():
                 y2 = y+60
             else:
                 x1 = platform["x1"]
-                x2 = platform["x2"]
+                x2 = platform["x2"] 
                 y1 = platform["y1"]
                 y2 = platform["y2"]
             zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
@@ -327,7 +336,7 @@ def parkurchek():
     root.bind("<KeyPress-k>", lambda event: root.destroy())
     root.bind("<KeyPress-space>", jump)
     
-    inertion_czech()
+    fizika_czech()
     play.destroy()
     zagolovchik.destroy()
     parkOURCZECH.destroy()
@@ -353,9 +362,12 @@ parkOURCZECH = Button(root, text="Parkour practice", padx=20, pady=10, command=p
 play.pack()
 parkOURCZECH.pack()
 
-def inertion_czech():
+def fizika_czech():
     global X, Y, speedX, speedY, stoIt, Jeremiah_stoIt, end_flag, absoluteY
-    root.after(int(tick_duration*1000), inertion_czech)
+    root.after(int(tick_duration*1000), fizika_czech)
+    
+    print(c.coords(pizza))
+
     absoluteY = c.coords(bob)[1] - c.coords(absolut_vodka)[1]
     oldX, oldY = X, Y
     X += speedX * tick_duration
@@ -426,20 +438,19 @@ def inertion_czech():
     elif any(conflict_czechk(bob, jump).collisions[3] for jump in jump_list):
         speedY = 0
     if conflict_czechk(bob, vspomoGosha_v2_0).any():
-        X -= speedX*tick_duration
+        X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
     if conflict_czechk(bob, vspomoGosha_v3_0).any():
-        X -= speedX*tick_duration 
+        X -= speedX*tick_duration - 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
     if speedY < 0:
         if any(conflict_czechk(bob, vspomoGosha_v4_0).collisions):
-            Y -= speedY*tick_duration 
+            Y -= speedY*tick_duration - 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
     if absoluteY < 300:
         if any(conflict_czechk(bob,vspomoGosha_v5_0).collisions):
-            Y -= speedY*tick_duration
+            Y -= speedY*tick_duration + 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
-
 
 def FRICKtion(timer_thing):
     global pressed_a, pressed_d, stoIt, speedX, FRICKtion_FUCKtor
@@ -457,7 +468,7 @@ def go_czechker():
         if speedX < -150:
             speedX = -150
     if pressed_s:
-        speedY += 20
+        speedY += 1
     if pressed_d:
         speedX += 150
         if speedX >= 150:
