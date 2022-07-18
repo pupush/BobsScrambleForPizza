@@ -16,7 +16,7 @@ class Jeremih:
     stoIt: bool
 
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, pizza_png, boboprobivaemiy, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jeremiah_list, jump_list, invis_list
+    global c, absolut_vodka, pizza_png, boboprobivaemiy, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
@@ -60,12 +60,14 @@ def levelы(uroven_nazvanie):
     Y = float(c.coords(bob)[1])
 
     john_list = []
+    TOZHOS = [] #Tebe Ostalos' ZHyt' Odnu Sekundu
     platform_list = []
     jump_list = []
     jeremiah_list = []
     invis_list = []
 
     def iz_levela():
+        global TOZHOS
         for john in john_data:
             if john["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
@@ -81,8 +83,9 @@ def levelы(uroven_nazvanie):
                 y1 = john["y1"]
                 y2 = john["y2"]
 
-            krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
-            john_list.append(krasniy_amogus)
+            predatel_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
+            john_list.append(predatel_amogus)
+            TOZHOS.append(y1)
 
         for platform in platform_data:
             if platform["random"]:
@@ -138,6 +141,8 @@ def levelы(uroven_nazvanie):
             invis_list.append(obmanSCHTSCHikoviy_amogus)
 
     iz_levela()
+
+    TOZHOS = max(TOZHOS)    
 
     pressed_a = False
     pressed_s = False
@@ -210,7 +215,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, platform_list, jump_list, jeremiah_list
+    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jump_list, jeremiah_list
     c = Canvas(root, width=400, height=400)
     c.pack()
     absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
@@ -232,11 +237,13 @@ def parkurchek():
     vspomoGosha_v5_0 = c.create_rectangle(-2**68,300,2**68,999999999999, outline="#653")  
 
     john_list = []
+    TOZHOS = [] #Tebe Osatlos' ZHyt' Odnu Sekundu
     platform_list = []
     jump_list = []
     jeremiah_list = []
 
     def parkurist():
+        global TOZHOS
         for john in john_data:
             if john["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
@@ -254,7 +261,7 @@ def parkurchek():
 
             krasniy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#a00", tags=("vse_fignjuliny"))
             john_list.append(krasniy_amogus)
-
+            TOZHOS.append(y1)
 
         for platform in platform_data:
             if platform["random"]:
@@ -273,6 +280,8 @@ def parkurchek():
             zheleznskiy_amogus = c.create_rectangle(x1, y1, x2, y2, outline="#000", fill="#F5F5DC", tags=("vse_fignjuliny")) 
             platform_list.append(zheleznskiy_amogus)
     parkurist()
+
+    TOZHOS = max(TOZHOS)
 
     pressed_a = False
     pressed_s = False
@@ -365,9 +374,6 @@ parkOURCZECH.pack()
 def fizika_czech():
     global X, Y, speedX, speedY, stoIt, Jeremiah_stoIt, end_flag, absoluteY
     root.after(int(tick_duration*1000), fizika_czech)
-    
-    print(c.coords(pizza))
-
     absoluteY = c.coords(bob)[1] - c.coords(absolut_vodka)[1]
     oldX, oldY = X, Y
     X += speedX * tick_duration
@@ -447,7 +453,7 @@ def fizika_czech():
         if any(conflict_czechk(bob, vspomoGosha_v4_0).collisions):
             Y -= speedY*tick_duration - 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
-    if absoluteY < 300:
+    if absoluteY < TOZHOS-150:
         if any(conflict_czechk(bob,vspomoGosha_v5_0).collisions):
             Y -= speedY*tick_duration + 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
