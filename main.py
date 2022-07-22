@@ -212,6 +212,7 @@ def levelы(uroven_nazvanie):
     parkOURCZECH.destroy()
     for knopochk in list_knopochek:
         knopochk.destroy()
+    nenuzhniy_dibil.destroy()
 
 def parkurchek():
     import sozdatel_jsonov
@@ -353,15 +354,21 @@ def parkurchek():
 zagolovchik = Label(root, text="BOB'S SCRAMBLE \nFOR PIZZA", anchor="nw", font="Open_Sans 20")
 zagolovchik.pack()
 def vыbiratelь(): 
-    global list_knopochek
+    global list_knopochek, nenuzhniy_dibil
     vse_uROVni = os.listdir(path="levelы")
     list_knopochek = []
     list_levelov = []
+    nenuzhniy_dibil = Frame(root)
+    nenuzhniy_dibil.pack()
     for i, lvl in enumerate(vse_uROVni):
         def ya_zadobalsya_pridumyvat_nazvaniya(lvl):
             return lambda : levelы(lvl) 
-        knopocheka = Button(root, text=f"{i+1}", padx=10, pady=10, command=ya_zadobalsya_pridumyvat_nazvaniya(lvl))
-        knopocheka.pack()
+        if i%4 == 0:
+            novaya_rota = Frame(nenuzhniy_dibil)
+            novaya_rota.pack(fill="x")
+        knopocheka = Button(novaya_rota, text=f"{i+1}", padx=10, pady=10, command=ya_zadobalsya_pridumyvat_nazvaniya(lvl))
+        knopocheka.pack(side="left", padx=(21.5,0), pady=15)
+        
         list_knopochek.append(knopocheka)
         list_levelov.append(lvl)
     play.destroy()
