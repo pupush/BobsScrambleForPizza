@@ -4,6 +4,7 @@ import random
 import json
 import os
 from dataclasses import dataclass
+from conflict_CZECH_REPUBLIC import *
 
 root = Tk()
 
@@ -397,7 +398,7 @@ def fizika_czech():
         c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
         c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/2,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/2,Jeremiah_Y+30)
         for platform in platform_list:
-            KOLYAsion_v2_0 = conflict_czechk(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform)
+            KOLYAsion_v2_0 = collision_czech(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform)
             Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom = KOLYAsion_v2_0.collisions
             Иеремий_collisionX = KOLYAsion_v2_0.collisionX
             if Иеремий_collisionX_left or Иеремий_collisionX_right:
@@ -411,7 +412,7 @@ def fizika_czech():
                     ZHIRIMI.stoIt = platform
             elif not Иеремий_collisionX and ZHIRIMI.stoIt == platform:
                 ZHIRIMI.stoIt = False
-        if any(conflict_czechk(bob, ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228).collisions):
+        if any(collision_czech(bob, ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228).collisions):
             root.destroy()
         if c.coords(bob)[2] < c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228)[0]:
             ZHIRIMI.speedX = -75
@@ -422,14 +423,14 @@ def fizika_czech():
     FRICKtion(tick_duration)
     c.coords(bob, X, Y, X+30, Y+30)
 
-    if any(any(conflict_czechk(bob, john).collisions) for john in john_list):
+    if any(any(collision_czech(bob, john).collisions) for john in john_list):
         root.destroy()
-    if not end_flag and any(conflict_czechk(bob,vspomoGosha).collisions):
+    if not end_flag and any(collision_czech(bob,vspomoGosha).collisions):
         end_flag = True
         c.create_text(200,50,text="Поздравляю, ты дошел до просто стоящей и никак не \nдвигающейся pizzы! Даже собака с моего двора \nэто не смогла сделать!")
         root.after(3500, root.destroy)
     for platform in platform_list:
-        KOLYAsion = conflict_czechk(bob,platform)
+        KOLYAsion = collision_czech(bob,platform)
         collisionX_left, collisionX_right, collisionY_top, collisionY_bottom = KOLYAsion.collisions
         collisionX = KOLYAsion.collisionX
         if collisionX_left or collisionX_right:
@@ -444,24 +445,24 @@ def fizika_czech():
                 stoIt = platform
         if not collisionX and stoIt == platform:
             stoIt = False
-    if any(conflict_czechk(bob, jump).collisions[2] for jump in jump_list):
+    if any(collision_czech(bob, jump).collisions[2] for jump in jump_list):
         speedY = -300
-    elif any(conflict_czechk(bob, jump).collisions[0] for jump in jump_list) or any(conflict_czechk(bob, jump).collisions[1] for jump in jump_list):
+    elif any(collision_czech(bob, jump).collisions[0] for jump in jump_list) or any(collision_czech(bob, jump).collisions[1] for jump in jump_list):
         speedX = 0
-    elif any(conflict_czechk(bob, jump).collisions[3] for jump in jump_list):
+    elif any(collision_czech(bob, jump).collisions[3] for jump in jump_list):
         speedY = 0
-    if conflict_czechk(bob, vspomoGosha_v2_0).any():
+    if collision_czech(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
-    if conflict_czechk(bob, vspomoGosha_v3_0).any():
+    if collision_czech(bob, vspomoGosha_v3_0).any():
         X -= speedX*tick_duration - 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
     if speedY < 0:
-        if any(conflict_czechk(bob, vspomoGosha_v4_0).collisions):
+        if any(collision_czech(bob, vspomoGosha_v4_0).collisions):
             Y -= speedY*tick_duration - 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
     if absoluteY < TOZHOS-150:
-        if any(conflict_czechk(bob,vspomoGosha_v5_0).collisions):
+        if any(collision_czech(bob,vspomoGosha_v5_0).collisions):
             Y -= speedY*tick_duration + 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
 
@@ -494,24 +495,11 @@ def jump(event=None):
         stoIt = False
         speedY = -200
 
-@dataclass
-class collision_data:
-    collisions: list[bool]
-    collisionX: bool
-
-    def any(self):
-        return any(self.collisions) or self.collisionX
-
-def conflict_czechk(someone1,someone2):
+def collision_czech(someone1, someone2):
     pos1 = c.coords(someone1)
     pos2 = c.coords(someone2)
-    collisionY = pos1[3] >= pos2[1] and pos1[1] <= pos2[3]
-    collisionX = pos1[2] >= pos2[0] and pos1[0] <= pos2[2]
-    collisionX_left = collisionY and pos2[2] >= pos1[2] >= pos2[0] 
-    collisionX_right = collisionY and pos2[0] <= pos1[0] <= pos2[2]
-    collisionY_top = collisionX and pos2[1] <= pos1[3] <= pos2[3]
-    collisionY_bottom = collisionX and pos2[3] >= pos1[1] >= pos2[1]
-    
-    return collision_data(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
+    return conflict_czechk(pos1, pos2)
 
 root.mainloop()
+
+# ꙮ
