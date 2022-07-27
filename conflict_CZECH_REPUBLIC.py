@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+import unittest
 
 @dataclass
-class collision_data:
+class CollisionData:
     collisions: list[bool]
     collisionX: bool
 
@@ -16,4 +17,11 @@ def conflict_czechk(pos_адин, pos_два):
     collisionY_top = collisionX and pos_два[1] <= pos_адин[3] <= pos_два[3]
     collisionY_bottom = collisionX and pos_два[3] >= pos_адин[1] >= pos_два[1]
     
-    return collision_data(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
+    return CollisionData(collisions=[collisionX_left, collisionX_right, collisionY_top, collisionY_bottom], collisionX=collisionX)
+
+class ABOBA(unittest.TestCase):
+    def test_ugsdfugydsfydsflhidsgsdhidshk(self):
+        self.assertEqual(conflict_czechk([10,10,110,110], [26,83,428,106]), CollisionData(collisions=[True,False, False, False], collisionX=True))
+
+if __name__ == "__main__":
+    unittest.main()
