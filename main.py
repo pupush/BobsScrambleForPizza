@@ -17,7 +17,7 @@ class Jeremih:
     stoIt: bool
 
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, pizza_png, boboprobivaemiy, fotochka, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list, key_list
+    global c, absolut_vodka, pizza_png, boboprobivaemiy, list_fotochkov, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list, key_list
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
@@ -75,9 +75,10 @@ def levelы(uroven_nazvanie):
     jeremiah_list = []
     invis_list = []
     key_list = []
+    list_fotochkov = []
 
     def iz_levela():
-        global TOZHOS, fotochka
+        global TOZHOS
         for john in john_data:
             if john["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
@@ -162,6 +163,7 @@ def levelы(uroven_nazvanie):
             otkrivatelniy_amogus = c.create_image(key_x, key_y, image=fotochka, anchor="nw", tags="vse_fignjuliny")
             vasSALOviy_sugoma = c.create_rectangle(vassal_x1, vassal_y1, vassal_x2, vassal_y2, outline="#000", fill="#F5F5DC", tags="vse_fignjuliny")
             key_list.append([otkrivatelniy_amogus, vasSALOviy_sugoma, klucz_kasatel])
+            list_fotochkov.append(fotochka)
 
     iz_levela()
 
