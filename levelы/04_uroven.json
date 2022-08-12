@@ -24,14 +24,12 @@
             "y2" : 305 
         }
     ],
-    "jumpy_list":[],
     "jeremiah_list":[
         {
         "x1": 1400,
         "y1": 263
         }
     ],
-    "invis_list":[],
     "end" : {
         "x" : 1440,
         "y" : 215

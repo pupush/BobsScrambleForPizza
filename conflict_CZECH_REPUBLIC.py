@@ -21,7 +21,7 @@ def conflict_czechk(pos_адин, pos_два):
 
 class ABOBA(unittest.TestCase):
     def test_ugsdfugydsfydsflhidsgsdhidshk(self):
-        self.assertEqual(conflict_czechk([10,10,110,110], [26,83,428,106]), CollisionData(collisions=[True,False, False, False], collisionX=True))
+        self.assertEqual(conflict_czechk([10,10,110,110], [26,83,428,106]), CollisionData(collisions=[True, False, False, False], collisionX=True))
 
 if __name__ == "__main__":
     unittest.main()

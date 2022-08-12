@@ -1,10 +1,10 @@
-from __future__ import absolute_import
 from tkinter import *
 import random
 import json
 import os
 from dataclasses import dataclass
 from conflict_CZECH_REPUBLIC import *
+import time
 
 root = Tk()
 
@@ -17,21 +17,29 @@ class Jeremih:
     stoIt: bool
 
 def levelы(uroven_nazvanie):
-    global c, absolut_vodka, pizza_png, boboprobivaemiy, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list
+    global c, absolut_vodka, pizza_png, boboprobivaemiy, fotochka, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list, key_list
     f = open(os.path.join("levelы", uroven_nazvanie))
     coord_dacha = json.load(f)
     f.close()
     john_data = coord_dacha["john_list"]
-    platform_data = coord_dacha["platform_list"]
-    jump_data = coord_dacha["jumpy_list"]
-    jeremiah_data = coord_dacha["jeremiah_list"]
-    invis_data = coord_dacha["invis_list"]
+    platform_data = coord_dacha.get("platform_list", [])
+    jump_data = coord_dacha.get("jumpy_list", [])
+    jeremiah_data = coord_dacha.get("jeremiah_list", [])
+    invis_data = coord_dacha.get("invis_list", [])
+    key_data = coord_dacha.get("key_list", [])
     end_data = coord_dacha["end"]
 
     c = Canvas(root, width=400, height=400)
     c.pack()
 
     absolut_vodka = c.create_rectangle(0,0,1,1, outline="", tags="vse_fignjuliny")
+
+    klyuchi = []
+    for klucz in os.listdir(path="klyuchi"):
+        klyuchi.append(klucz)
+    
+    NUZHNIE_klyuchi = random.sample(klyuchi, k=len(key_data))
+    #NUZHNIE_klyuchi = [PhotoImage(file = f"klyuchi\\{f}") for f in NUZHNIE_klyuchi]
 
     pizza_png = PhotoImage(file = "zhrachka.png")
     boboprobivaemiy = PhotoImage(file = "platformichulechka.png")
@@ -66,9 +74,10 @@ def levelы(uroven_nazvanie):
     jump_list = []
     jeremiah_list = []
     invis_list = []
+    key_list = []
 
     def iz_levela():
-        global TOZHOS
+        global TOZHOS, fotochka
         for john in john_data:
             if john["random"]:
                 rand_x1, rand_y1, rand_x2, rand_y2 = john["rand_x1"], john["rand_y1"], john["rand_x2"], john["rand_y2"]
@@ -140,10 +149,23 @@ def levelы(uroven_nazvanie):
             y = invis["y"]
             obmanSCHTSCHikoviy_amogus = c.create_image(x, y, image=boboprobivaemiy, anchor="nw", tags="vse_fignjuliny")
             invis_list.append(obmanSCHTSCHikoviy_amogus)
+        
+        for id, key in enumerate(key_data):
+            key_x = key["key_x"]
+            key_y = key["key_y"]
+            vassal_x1 = key["vassal_x1"]
+            vassal_y1 = key["vassal_y1"]
+            vassal_x2 = key["vassal_x2"]
+            vassal_y2 = key["vassal_y2"]
+            fotochka = PhotoImage(file=f"klyuchi\\{NUZHNIE_klyuchi[id]}")
+            klucz_kasatel = c.create_rectangle(key_x, key_y, key_x + fotochka.width(), key_y + fotochka.height(), outline="", fill="", tags="vse_fignjuliny")
+            otkrivatelniy_amogus = c.create_image(key_x, key_y, image=fotochka, anchor="nw", tags="vse_fignjuliny")
+            vasSALOviy_sugoma = c.create_rectangle(vassal_x1, vassal_y1, vassal_x2, vassal_y2, outline="#000", fill="#F5F5DC", tags="vse_fignjuliny")
+            key_list.append([otkrivatelniy_amogus, vasSALOviy_sugoma, klucz_kasatel])
 
     iz_levela()
 
-    TOZHOS = max(TOZHOS)    
+    TOZHOS = max(TOZHOS)
 
     pressed_a = False
     pressed_s = False
@@ -158,7 +180,6 @@ def levelы(uroven_nazvanie):
     FRICKtion_FUCKtor = 300
     X = float(c.coords(bob)[0])
     Y = float(c.coords(bob)[1])
-
 
     def move_left(event):
         global pressed_a
@@ -208,9 +229,7 @@ def levelы(uroven_nazvanie):
     root.bind("<KeyPress-space>", jump)
     
     fizika_czech()
-    play.destroy()
     zagolovchik.destroy()
-    parkOURCZECH.destroy()
     for knopochk in list_knopochek:
         knopochk.destroy()
     nenuzhniy_dibil.destroy()
@@ -369,7 +388,6 @@ def vыbiratelь():
             novaya_rota.pack(fill="x")
         knopocheka = Button(novaya_rota, text=f"{i+1}", padx=10, pady=10, command=ya_zadobalsya_pridumyvat_nazvaniya(lvl))
         knopocheka.pack(side="left", padx=(21.5,0), pady=15)
-        
         list_knopochek.append(knopocheka)
         list_levelov.append(lvl)
     play.destroy()
@@ -451,6 +469,11 @@ def fizika_czech():
         speedX = 0
     elif any(collision_czech(bob, jump).collisions[3] for jump in jump_list):
         speedY = 0
+    for l in key_list:
+        klucz, vassal, kasalka = l
+        if any(collision_czech(bob, kasalka).collisions):
+            #c.delete(klucz) # TODO: сделатб, чтоб ключ двигался за bobом
+            c.delete(vassal)
     if collision_czech(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
