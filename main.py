@@ -238,7 +238,7 @@ def levelы(uroven_nazvanie):
 
 def parkurchek():
     import sozdatel_jsonov
-    global c, absolut_vodka, img, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jump_list, jeremiah_list
+    global c, absolut_vodka, pizza_png, boboprobivaemiy, list_fotochkov, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list, key_list
     c = Canvas(root, width=400, height=400)
     c.pack()
     absolut_vodka = c.create_rectangle(0,0,0,0, outline="", tags="vse_fignjuliny")
@@ -260,10 +260,13 @@ def parkurchek():
     vspomoGosha_v5_0 = c.create_rectangle(-2**68,300,2**68,999999999999, outline="#653")  
 
     john_list = []
-    TOZHOS = [] #Tebe Osatlos' ZHyt' Odnu Sekundu
+    TOZHOS = [] #Tebe Ostalos' ZHyt' Odnu Sekundu
     platform_list = []
     jump_list = []
     jeremiah_list = []
+    invis_list = []
+    key_list = []
+    list_fotochkov = []
 
     def parkurist():
         global TOZHOS
@@ -369,12 +372,13 @@ def parkurchek():
     root.bind("<KeyPress-space>", jump)
     
     fizika_czech()
-    play.destroy()
     zagolovchik.destroy()
     parkOURCZECH.destroy()
-#for lvl, i in zip(vse_uROVni, range(0, len(vse_uROVni)))
+    play.destroy()
+
 zagolovchik = Label(root, text="BOB'S SCRAMBLE \nFOR PIZZA", anchor="nw", font="Open_Sans 20")
 zagolovchik.pack()
+
 def vыbiratelь(): 
     global list_knopochek, nenuzhniy_dibil
     vse_uROVni = os.listdir(path="levelы")
@@ -382,18 +386,23 @@ def vыbiratelь():
     list_levelov = []
     nenuzhniy_dibil = Frame(root)
     nenuzhniy_dibil.pack()
+
     for i, lvl in enumerate(vse_uROVni):
         def ya_zadobalsya_pridumyvat_nazvaniya(lvl):
-            return lambda : levelы(lvl) 
+            return lambda : levelы(lvl)
+        
         if i%4 == 0:
             novaya_rota = Frame(nenuzhniy_dibil)
             novaya_rota.pack(fill="x")
+        
         knopocheka = Button(novaya_rota, text=f"{i+1}", padx=10, pady=10, command=ya_zadobalsya_pridumyvat_nazvaniya(lvl))
         knopocheka.pack(side="left", padx=(21.5,0), pady=15)
         list_knopochek.append(knopocheka)
         list_levelov.append(lvl)
+    
     play.destroy()
     parkOURCZECH.destroy()
+
 play = Button(root, text="Play", padx=20, pady=10, command=vыbiratelь)
 parkOURCZECH = Button(root, text="Parkour practice", padx=20, pady=10, command=parkurchek)
 play.pack()
@@ -402,12 +411,14 @@ parkOURCZECH.pack()
 def fizika_czech():
     global X, Y, speedX, speedY, stoIt, Jeremiah_stoIt, end_flag, absoluteY
     root.after(int(tick_duration*1000), fizika_czech)
+
     absoluteY = c.coords(bob)[1] - c.coords(absolut_vodka)[1]
     oldX, oldY = X, Y
     X += speedX * tick_duration
     Y += speedY * tick_duration
     if not stoIt:
         speedY += gravity * tick_duration
+    
     for ZHIRIMI in jeremiah_list: 
         Jeremiah_oldX, Jeremiah_oldY = c.coords(ZHIRIMI.treugolnik_telo)[0], c.coords(ZHIRIMI.treugolnik_telo)[1]
         Jeremiah_X, Jeremiah_Y = c.coords(ZHIRIMI.treugolnik_telo)[0], c.coords(ZHIRIMI.treugolnik_telo)[1]
@@ -415,62 +426,82 @@ def fizika_czech():
         Jeremiah_Y += ZHIRIMI.speedY * tick_duration
         if not ZHIRIMI.stoIt:
             ZHIRIMI.speedY += gravity*tick_duration
+        
         c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
         c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/2,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/2,Jeremiah_Y+30)
+        
         for platform in platform_list:
             KOLYAsion_v2_0 = collision_czech(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform)
             Иеремий_collisionX_left, Иеремий_collisionX_right, Иеремий_collisionY_top, Иеремий_collisionY_bottom = KOLYAsion_v2_0.collisions
             Иеремий_collisionX = KOLYAsion_v2_0.collisionX
+            
             if Иеремий_collisionX_left or Иеремий_collisionX_right:
                 Jeremiah_X = Jeremiah_oldX 
                 c.coords(ZHIRIMI, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
+            
             if Иеремий_collisionY_top or Иеремий_collisionY_bottom:
                 ZHIRIMI.speedY = 0
                 Jeremiah_Y = Jeremiah_oldY
                 c.coords(ZHIRIMI, Jeremiah_X, Jeremiah_Y, Jeremiah_Y, Jeremiah_X-15,Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
                 if Иеремий_collisionY_top:
                     ZHIRIMI.stoIt = platform
+            
             elif not Иеремий_collisionX and ZHIRIMI.stoIt == platform:
                 ZHIRIMI.stoIt = False
+        
         if any(collision_czech(bob, ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228).collisions):
             root.destroy()
+        
         if c.coords(bob)[2] < c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228)[0]:
             ZHIRIMI.speedX = -75
+        
         if c.coords(bob)[0] > c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228)[2]:
             ZHIRIMI.speedX = 75
+        
         c.coords(ZHIRIMI.treugolnik_telo, Jeremiah_X, Jeremiah_Y, Jeremiah_X-15, Jeremiah_Y+30, Jeremiah_X+15, Jeremiah_Y+30)
         c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, Jeremiah_X-(Jeremiah_X-(Jeremiah_X-15))/2,Jeremiah_Y,Jeremiah_X+((Jeremiah_X+15)-Jeremiah_X)/2,Jeremiah_Y+30)
+    
     FRICKtion(tick_duration)
+    
     c.coords(bob, X, Y, X+30, Y+30)
 
     if any(any(collision_czech(bob, john).collisions) for john in john_list):
         root.destroy()
+    
     if not end_flag and any(collision_czech(bob,vspomoGosha).collisions):
         end_flag = True
         c.create_text(200,50,text="Поздравляю, ты дошел до просто стоящей и никак не \nдвигающейся pizzы! Даже собака с моего двора \nэто не смогла сделать!")
-        root.after(3500, root.destroy)
+        root.after(5000, root.destroy)
+    
     for platform in platform_list:
         KOLYAsion = collision_czech(bob,platform)
         collisionX_left, collisionX_right, collisionY_top, collisionY_bottom = KOLYAsion.collisions
         collisionX = KOLYAsion.collisionX
+        
         if collisionX_left or collisionX_right:
             speedX = 0
             X = oldX
             c.coords(bob, X, Y, X+30, Y+30)
+        
         if collisionY_top or collisionY_bottom:
             speedY = 0
             Y = oldY
             c.coords(bob, X, Y, X+30, Y+30)
             if collisionY_top:
                 stoIt = platform
+        
         if not collisionX and stoIt == platform:
             stoIt = False
+    
     if any(collision_czech(bob, jump).collisions[2] for jump in jump_list):
         speedY = -300
+    
     elif any(collision_czech(bob, jump).collisions[0] for jump in jump_list) or any(collision_czech(bob, jump).collisions[1] for jump in jump_list):
         speedX = 0
+    
     elif any(collision_czech(bob, jump).collisions[3] for jump in jump_list):
         speedY = 0
+    
     for l in key_list:
         klucz, vassal, kasalka = l
         try:
@@ -488,13 +519,16 @@ def fizika_czech():
     if collision_czech(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
+    
     if collision_czech(bob, vspomoGosha_v3_0).any():
         X -= speedX*tick_duration - 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
+    
     if speedY < 0:
         if any(collision_czech(bob, vspomoGosha_v4_0).collisions):
             Y -= speedY*tick_duration - 0.0625
             c.move("vse_fignjuliny", 0, -speedY*tick_duration)
+    
     if absoluteY < TOZHOS-150:
         if any(collision_czech(bob,vspomoGosha_v5_0).collisions):
             Y -= speedY*tick_duration + 0.0625
@@ -505,6 +539,7 @@ def FRICKtion(timer_thing):
     if not pressed_a and stoIt:
         if speedX > 0:
             speedX -= FRICKtion_FUCKtor * timer_thing
+    
     if not pressed_d and stoIt:
         if speedX < 0:
             speedX += FRICKtion_FUCKtor * timer_thing
@@ -515,8 +550,10 @@ def go_czechker():
         speedX -= 150
         if speedX < -150:
             speedX = -150
+    
     if pressed_s:
         speedY += 1
+    
     if pressed_d:
         speedX += 150
         if speedX >= 150:
