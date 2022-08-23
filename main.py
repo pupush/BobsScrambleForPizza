@@ -511,11 +511,16 @@ def fizika_czech():
                 speedX = 0
                 speedY = 0
             if any(collision_czech(bob, kasalka).collisions):
-                c.delete(klucz) # TODO: сделатб, чтоб ключ двигался за bobом
-                c.delete(vassal)
                 c.delete(kasalka)
         except:
-            pass
+            try:
+                if not any(collision_czech(bob, vassal).collisions):
+                    c.coords(klucz, c.coords(bob)[0]-110, c.coords(bob)[1]-15)
+                elif any(collision_czech(bob, vassal).collisions):
+                    c.delete(vassal)
+                    c.delete(klucz)
+            except:
+                pass
     if collision_czech(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
