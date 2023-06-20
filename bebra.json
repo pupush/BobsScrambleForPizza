@@ -48,5 +48,8 @@
     "end" : {
         "x" : 300,
         "y" : 220
+    },
+    "README" : {
+        "README" : "i once used this as a test level, but now, all left of it is only 52 strings of code, ruins, and infinite glory..."
     }
-}
+} 

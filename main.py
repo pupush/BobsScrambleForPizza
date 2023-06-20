@@ -5,8 +5,11 @@ import os
 from dataclasses import dataclass
 from conflict_CZECH_REPUBLIC import *
 import time
+import pyperclip
+# these are modules
 
 root = Tk()
+# basically the place i work in
 
 @dataclass
 class Jeremih:
@@ -15,12 +18,15 @@ class Jeremih:
     speedY: int
     vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228 : int
     stoIt: bool
+# this is jeremiah, he can move, we will use him later
 
-def levelы(uroven_nazvanie):
+def levelы(uroven_nazvanie): #levels
     global c, absolut_vodka, pizza_png, boboprobivaemiy, list_fotochkov, pizza, bob, vspomoGosha, vspomoGosha_v2_0, vspomoGosha_v3_0, vspomoGosha_v4_0, vspomoGosha_v5_0, pressed_a, pressed_d, pressed_s, end_flag, speedX, speedY, tick_duration, stoIt, Jeremiah_stoIt, gravity, FRICKtion_FUCKtor, X, Y, john_list, TOZHOS, platform_list, jeremiah_list, jump_list, invis_list, key_list
-    f = open(os.path.join("levelы", uroven_nazvanie))
-    coord_dacha = json.load(f)
-    f.close()
+    # globallin da shit (the things we will need later) outta here
+
+    f = open(os.path.join("levelы", uroven_nazvanie)) #the path to the level yo wanna play
+    coord_dacha = json.load(f) #loadin it up
+    f.close() #we dont need the module os anymore
     john_data = coord_dacha["john_list"]
     platform_data = coord_dacha.get("platform_list", [])
     jump_data = coord_dacha.get("jumpy_list", [])
@@ -28,47 +34,52 @@ def levelы(uroven_nazvanie):
     invis_data = coord_dacha.get("invis_list", [])
     key_data = coord_dacha.get("key_list", [])
     end_data = coord_dacha["end"]
+    #the objects' json data
 
     c = Canvas(root, width=400, height=400)
     c.pack()
+    #the canvas
 
     absolut_vodka = c.create_rectangle(0,0,1,1, outline="", tags="vse_fignjuliny")
+    #absolute zero point, dont question it, its for the camera physics basically
 
     klyuchi = []
     for klucz in os.listdir(path="klyuchi"):
         klyuchi.append(klucz)
+    #adding the images of all da keys into here, then im gonna take one o' those brave boys randomly to use in the level, if there are any in the level
     
-    NUZHNIE_klyuchi = random.sample(klyuchi, k=len(key_data))
-    #NUZHNIE_klyuchi = [PhotoImage(file = f"klyuchi\\{f}") for f in NUZHNIE_klyuchi]
+    NUZHNIE_klyuchi = random.sample(klyuchi, k=len(key_data)) #here it is
 
-    pizza_png = PhotoImage(file = "zhrachka.png")
-    boboprobivaemiy = PhotoImage(file = "platformichulechka.png")
-    pizza = c.create_image(end_data["x"], end_data["y"], image=pizza_png, anchor="nw", tags="vse_fignjuliny")
-    bob = c.create_rectangle(135, 220, 165, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") 
-    vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + pizza_png.width(), end_data["y"] + pizza_png.height(), outline="", tags="vse_fignjuliny")
-    vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") 
-    vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") 
-    vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) 
-    vspomoGosha_v5_0 = c.create_rectangle(-2**68,9999999999999,2**68,300)
+    pizza_png = PhotoImage(file = "zhrachka.png") #bob's pizza's photo
+    boboprobivaemiy = PhotoImage(file = "platformichulechka.png") #fake platform
+    pizza = c.create_image(end_data["x"], end_data["y"], image=pizza_png, anchor="nw", tags="vse_fignjuliny") #THE bob's pizza
+    bob = c.create_rectangle(135, 220, 165, 250, outline="#000", fill="#7d3", tags="vse_fignjuliny") #THE MAIN PROTAGONIST, THE ONE AND ONLY, BOB THE THIRD OF BRITTANY-BURGUNDIA THE SON OF THe GOD OF WAR OF ROME ARES HIMSELF!!!!
+    vspomoGosha = c.create_rectangle(end_data["x"], end_data["y"], end_data["x"] + pizza_png.width(), end_data["y"] + pizza_png.height(), outline="", tags="vse_fignjuliny") # pizza's hitbox
+    vspomoGosha_v2_0 = c.create_rectangle(250,0,460,9999999, outline="") #left end of camera, it starts to go lefter
+    vspomoGosha_v3_0 = c.create_rectangle(-460,0,130,9999999, outline="") #right end of camera, it starts to go righter
+    vspomoGosha_v4_0 = c.create_rectangle(-2**68,-9999999999999,2**68,100) #bottom end of camera
+    vspomoGosha_v5_0 = c.create_rectangle(-2**68,9999999999999,2**68,300) #top end of camera, it starts to go top
 
     pressed_a = False
     pressed_s = False
     pressed_d = False
+    # for detecting when to move
     end_flag = False
+    # for end text
 
-    speedX = 0 # це пиксели въ секунду
-    speedY = 5 # це тоже
-    Jeremiah_speedX = 75
-    Jeremiah_speedY = 0
-    tick_duration = 0.01 # це въ секундахъ
-    stoIt = False
-    Jeremiah_stoIt = False
+    speedX = 0 # pixels per second on the horizontal axis (default setting)
+    speedY = 5 # pixels er second on the vertical axis (default setting)
+    Jeremiah_speedX = 75 #speed of Jeremiah to the player in pixels per second
+    Jeremiah_speedY = 0 # this will be not 0 only whe jeremiah falls
+    tick_duration = 0.01 # one in-game tick in seconds
+    stoIt = False # is the player standing on something or not (by default)
+    Jeremiah_stoIt = False #same for jeremiah (by default)
     gravity = 300
-    FRICKtion_FUCKtor = 300
-    X = float(c.coords(bob)[0])
-    Y = float(c.coords(bob)[1])
+    FRICKtion_FUCKtor = 300 #friction
+    X = float(c.coords(bob)[0]) #bob's horizontal coordinate
+    Y = float(c.coords(bob)[1]) #bob's vertical coordinate
 
-    john_list = []
+    john_list = [] 
     TOZHOS = [] #Tebe Ostalos' ZHyt' Odnu Sekundu
     platform_list = []
     jump_list = []
@@ -76,6 +87,7 @@ def levelы(uroven_nazvanie):
     invis_list = []
     key_list = []
     list_fotochkov = []
+    #lists of objects
 
     def iz_levela():
         global TOZHOS
@@ -521,6 +533,7 @@ def fizika_czech():
                     c.delete(klucz)
             except:
                 pass
+
     if collision_czech(bob, vspomoGosha_v2_0).any():
         X -= speedX*tick_duration + 0.0625
         c.move("vse_fignjuliny", -speedX*tick_duration, 0)
