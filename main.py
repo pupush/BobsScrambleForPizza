@@ -152,7 +152,7 @@ def levelы(uroven_nazvanie): #levels
             x3 = x1+15
             y3 = y1+30
             trёugolnik = c.create_polygon(x1,y1,x2,y2,x3,y3,outline="#000", fill="#0000ff", tags="vse_fignjuliny")
-            VOVAN228 = c.create_rectangle(x1-(x1-x2)/2,y1/2,x1+(x3-x1)/2,y2, outline="#000", tags="vse_fignjuliny")
+            VOVAN228 = c.create_rectangle(x1-(x1-x2)/2,y1/2,x1+(x3-x1)/2,y2, tags="vse_fignjuliny")
             jeremy_list.append(Jeremih(treugolnik_telo=trёugolnik, speedX=jeremy_speedX, speedY=jeremy_speedY, vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228=VOVAN228, stoIt=jeremy_stoIt))
 
         for invis in invis_data:
@@ -440,7 +440,7 @@ def fizika_czech(): # i think i'm gonna vomit... this is the physics machine of 
             ZHIRIMI.speedY += gravity*tick_duration
         
         c.coords(ZHIRIMI.treugolnik_telo, jeremy_X, jeremy_Y, jeremy_X-15, jeremy_Y+30, jeremy_X+15, jeremy_Y+30) #this draws a jeremy
-        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, jeremy_X-(jeremy_X-15)/2, jeremy_Y, jeremy_X+(jeremy_X+15)/2, jeremy_Y+30) #jeremy's hitbox
+        c.coords(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, jeremy_X-7.5, jeremy_Y, jeremy_X+7.5, jeremy_Y+30) #jeremy's hitbox
         
         for platform in platform_list:
             KOLYAsion_v2_0 = collision_czech(ZHIRIMI.vspomogatelniy_obrazovanniy_vichyslitelniy_apparat_nomer_228, platform) #collision bool set

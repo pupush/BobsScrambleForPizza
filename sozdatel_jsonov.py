@@ -11,8 +11,8 @@ SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["platform_list"].append({"random":False, "x
 
 for i in range(0,-361,-2): #left mfs
     lastY = SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["platform_list"][-1]["y1"]
-    idkw1 = lastY-60
-    idkw2 = lastY+60 #these guys are gonna be a range
+    idkw1 = lastY-40
+    idkw2 = lastY+40 #these guys are gonna be a range
     x1 = i*125
     y1 = random.randint(idkw1,idkw2)
     x2 = (i-1)*125
@@ -26,8 +26,8 @@ for i in range(3,361,2): #right mfs
     lastY = SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["platform_list"][-1]["y1"]
     if i == 3:
         lastY = SAM_JSON_NE_EVO_SOBSTVENNOY_PERSONOY["platform_list"][0]["y1"]
-    idkw1 = lastY-60
-    idkw2 = lastY+60
+    idkw1 = lastY-40
+    idkw2 = lastY+40
     x1 = i*125
     x2 = (i+1)*125
     y1 = random.randint(idkw1,idkw2)
